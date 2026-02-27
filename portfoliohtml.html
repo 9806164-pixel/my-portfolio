@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>KIRILL // IDENTITY_DATABASE</title>
+    <style>
+        :root {
+            --bg: #030303;
+            --accent: #FF003C;  
+            --text: #ffffff;
+            --font-mono: 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair; }
+        body { 
+            background-color: var(--bg); color: var(--text); 
+            font-family: 'Arial Black', sans-serif; overflow-x: hidden;
+            background-image: linear-gradient(rgba(255, 0, 60, 0.05) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255, 0, 60, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- HEADER & GLITCH --- */
+        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .glitch-name {
+            font-size: clamp(3rem, 15vw, 12rem); font-weight: 900;
+            text-transform: uppercase; letter-spacing: -5px;
+            position: relative; animation: shake 0.5s infinite;
+        }
+
+        /* --- BENTO GRID --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 50px 20px 100px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; grid-auto-rows: 350px; }
+        
+        .card {
+            background: #080808; border: 1px solid #1a1a1a; position: relative;
+            overflow: hidden; transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1); 
+            display: flex; align-items: flex-end; padding: 30px;
+        }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 0 30px rgba(255, 0, 60, 0.15); }
+        .card-img { position: absolute; inset: 0; background-size: cover; background-position: center; filter: grayscale(1) brightness(0.4); transition: 0.5s; }
+        .card:hover .card-img { filter: grayscale(0) brightness(0.7); }
+        .card h3 { position: relative; font-size: 2rem; text-transform: uppercase; z-index: 2; line-height: 0.9; }
+
+        /* --- OVERLAY (SCROLLABLE GALLERY) --- */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 99999;
+            display: none; padding: 5vw; overflow-y: auto; backdrop-filter: blur(15px);
+        }
+        .ovl-content { max-width: 1200px; margin: 0 auto; }
+        .ovl-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; border-bottom: 1px solid #222; padding-bottom: 20px; }
+        .ovl-title { font-size: 4rem; color: var(--accent); text-transform: uppercase; }
+        
+        .work-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 30px; }
+        .work-item { background: #111; border: 1px solid #222; aspect-ratio: 4/5; overflow: hidden; }
+        .work-item img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            filter: grayscale(1) contrast(1.1) brightness(0.8);
+            transition: 0.4s ease;
+        }
+        .work-item:hover img { filter: grayscale(0) contrast(1) brightness(1); }
+
+        .close-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 10px 25px; font-family: var(--font-mono); cursor: pointer; }
+
+        /* --- ABOUT ME --- */
+        .about-flex { display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-start; }
+        .my-photo { width: 300px; height: 400px; background: #222; border: 1px solid var(--accent); background-size: cover; background-position: center; }
+
+        /* --- MUSIC MODULE --- */
+        .music-widget {
+            position: fixed; bottom: 30px; left: 30px; z-index: 1000;
+            background: rgba(10,10,10,0.9); border-left: 3px solid var(--accent); padding: 15px;
+            font-family: var(--font-mono); font-size: 11px; width: 250px;
+        }
+
+        .link-btn { display: inline-block; padding: 10px 20px; border: 1px solid var(--accent); color: #fff; text-decoration: none; margin: 5px; font-size: 12px; }
+        .link-btn:hover { background: var(--accent); color: #000; }
+
+        @keyframes shake { 0%, 100% { transform: translate(0); } 25% { transform: translate(2px, -2px); } 75% { transform: translate(-2px, 2px); } }
+    </style>
+</head>
+<body>
+
+    <div class="music-widget">
+        <div style="color: #444; margin-bottom: 8px;">// ATMOSPHERE_MODULE</div>
+        <div style="margin-bottom: 4px;">1. DVRST - Close Eyes</div>
+        <div style="margin-bottom: 4px;">2. Interworld - Metamorphosis</div>
+        <div style="margin-bottom: 10px;">3. Mareux - The Perfect Girl</div>
+        <div style="font-size: 9px; color: var(--accent);">[SYSTEM_VIBE: ANALYZED]</div>
+    </div>
+
+    <div class="overlay" id="ovl">
+        <div class="ovl-content">
+            <div class="ovl-header">
+                <h2 class="ovl-title" id="ovl-title">SECTION</h2>
+                <button class="close-btn" onclick="closeOvl()">[EXIT_SESSION]</button>
+            </div>
+            <div id="ovl-body"></div>
+        </div>
+    </div>
+
+    <header>
+        <div style="font-family: var(--font-mono); color: var(--accent); margin-bottom: 10px;">V.03 // USER_ID: KIRILL</div>
+        <h1 class="glitch-name" id="glitch-txt" data-text="КИРИЛЛ">КИРИЛЛ</h1>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+            <div class="card" style="grid-column: span 2;" onclick="renderAbout()">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop');"></div>
+                <h3>SYSTEM // <br>WHO_AM_I</h3>
+            </div>
+
+            <div class="card" onclick="renderPhoto()">
+                <div class="card-img" style="background-image: url('https://img.freepik.com/premium-photo/cyberpunk-cat-with-glasses-camera-futuristic-style-generative-ai_115919-5115.jpg');"></div>
+                <h3>VISUAL<br>ARCHIVE</h3>
+            </div>
+
+            <div class="card" onclick="renderTourism()">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop');"></div>
+                <h3>EXPEDITION<br>LOGS</h3>
+            </div>
+
+            <div class="card" onclick="renderCoding()">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000');"></div>
+                <h3>DEV_SYSTEM</h3>
+            </div>
+
+            <div class="card" onclick="renderBasket()">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1000');"></div>
+                <h3>ATHLETIC<br>MODULE</h3>
+            </div>
+
+            <div class="card" onclick="renderPhysics()">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000');"></div>
+                <h3>PHYSICS<br>LAB</h3>
+            </div>
+        </div>
+    </div>
+
+    <footer style="padding: 40px; text-align: center; border-top: 1px solid #111;">
+        <a href="https://t.me/@Kirall_8" class="link-btn">TELEGRAM</a>
+        <a href="mailto:9806164@gmail.com" class="link-btn">E-MAIL</a>
+        <a href="https://github.com/твой_ник" class="link-btn">GITHUB</a>
+    </footer>
+
+    <script>
+        // --- DATA_CONFIG: ТУТ ВСЕ ТВОИ ДАННЫЕ И ФОТКИ ---
+        const DATA = {
+            bio: {
+                photo: "img/ава_сфинкс.jpg", // Твое фото у Сфинкса
+                text: "Я Кирилл, 9 класс. Совмещаю несовместимое: суровый туризм с 5 класса и цифровой кодинг. Готовлюсь к ОГЭ по физике и выбиваю трехочковые на площадке. Этот сайт — моя цифровая оболочка."
+            },
+            photo_gallery: [
+                "img/звеззда морская.jpg", "img/зима пейзажик.jpeg", "img/зима.jpg", 
+                "img/зонтики.jpg", "img/коттельчики.jpg", "img/листьики.jpg", 
+                "img/цветочки.jpg", "img/собакме.jpg", "img/елка.jpg",
+                "img/глова пуши.jpg"
+            ],
+            tourism_gallery: [
+                "img/паопход 6.JPG", "img/позод2.JPG", "img/поохож3.jpg", 
+                "img/поход1.JPG", "img/поход7.JPG", "img/похпжд5.JPG"
+            ],
+            coding_links: [
+                {name: "TG_BOT", url: "https://t.me/@tyr_vega_bot"},
+                {name: "GITHUB", url: "https://github.com/your_nick"}
+            ]
+        };
+
+        // --- ENGINE (НЕ ТРОГАТЬ) ---
+        const el = document.getElementById('glitch-txt');
+        const names = ["КИРИЛЛ", "KIRILL", "TOURIST", "CODER", "基里爾", "كيريل", "キリル"];
+        let nIdx = 0; setInterval(() => { nIdx = (nIdx + 1) % names.length; el.innerText = names[nIdx]; el.setAttribute('data-text', names[nIdx]); }, 180);
+
+        function openOvl(title, html) {
+            document.getElementById('ovl-title').innerText = title;
+            document.getElementById('ovl-body').innerHTML = html;
+            document.getElementById('ovl').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeOvl() { document.getElementById('ovl').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+        // --- RENDERING FUNCTIONS ---
+        function renderAbout() {
+            openOvl("IDENTITY_REPORT", `
+                <div class="about-flex">
+                    <div class="my-photo" style="background-image: url('${DATA.bio.photo}')"></div>
+                    <div style="max-width: 600px;">
+                        <p style="font-size: 1.4rem; color: #ccc; font-family: var(--font-mono); border-left: 2px solid var(--accent); padding-left: 20px;">
+                            ${DATA.bio.text}
+                        </p>
+                    </div>
+                </div>
+            `);
+        }
+
+        function renderPhoto() {
+            let h = '<div class="work-gallery">';
+            DATA.photo_gallery.forEach(img => { h += `<div class="work-item"><img src="${img}"></div>`; });
+            h += '</div>';
+            openOvl("VISUAL_ARCHIVE", h);
+        }
+
+        function renderTourism() {
+            let h = '<p style="margin-bottom: 20px;">С 5 класса в пути. Горы, леса, палатки — это база.</p><div class="work-gallery">';
+            DATA.tourism_gallery.forEach(img => { h += `<div class="work-item"><img src="${img}"></div>`; });
+            h += '</div>';
+            openOvl("EXPEDITION_LOGS", h);
+        }
+
+        function renderCoding() {
+            let h = '<p>Мои разработки и репозитории:</p><div style="margin-top:20px;">';
+            DATA.coding_links.forEach(l => { h += `<a href="${l.url}" class="link-btn">${l.name}</a>`; });
+            h += '</div>';
+            openOvl("DEV_SYSTEM", h);
+        }
+
+        function renderPhysics() { openOvl("PHYSICS_LAB", "<p>Подготовка к ОГЭ в разгаре. Решаю задачи, понимаю мир через формулы.</p>"); }
+        function renderBasket() { openOvl("ATHLETIC_MODULE", "<p>Любимая игра. Скорость, точность, прыжок. На площадке я так же агрессивен, как в этом дизайне.</p>"); }
+    </script>
+</body>
+</html>
